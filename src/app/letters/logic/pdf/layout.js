@@ -103,15 +103,15 @@ export function composeDocument({ entries, recipient, shaper }) {
     pages.push(page);
     y = MARGIN.top;
     const top = MARGIN.top - 24;
-    text('A LETTER', SMALL, COLORS.soft, MARGIN.left, top, { tracking: 1.4 });
-    if (recipient) text(`For ${recipient}`, SMALL, COLORS.soft, PAGE.width - MARGIN.right, top, { align: 'right' });
+    text('편지', SMALL, COLORS.soft, MARGIN.left, top, { tracking: 1.4 });
+    if (recipient) text(`${recipient}에게`, SMALL, COLORS.soft, PAGE.width - MARGIN.right, top, { align: 'right' });
     page.ops.push({ kind: 'rule', x1: MARGIN.left, y1: top + 8, x2: PAGE.width - MARGIN.right, y2: top + 8, width: 0.5, color: COLORS.rule });
   }
 
   /** A long entry continues on a new page, labelled with its date. @param {Entry} entry */
   function continueOnNewPage(entry) {
     newPage();
-    text(`${formatDate(entry.createdAt, entry.tz)}, continued`, 8, COLORS.soft, MARGIN.left, y + 8);
+    text(`${formatDate(entry.createdAt, entry.tz)}, 이어서`, 8, COLORS.soft, MARGIN.left, y + 8);
     y += 22;
   }
 
@@ -123,17 +123,17 @@ export function composeDocument({ entries, recipient, shaper }) {
   const coverTop = PAGE.height * 0.3;
   drawEnvelope(page, center, coverTop + 6);
   let coverY = coverTop + 78;
-  text('A LETTER', 16, COLORS.accent, center, coverY, { align: 'center', tracking: 3 });
+  text('편지', 16, COLORS.accent, center, coverY, { align: 'center', tracking: 3 });
   page.ops.push({ kind: 'rule', x1: center - 14, y1: coverY + 16, x2: center + 14, y2: coverY + 16, width: 0.8, color: COLORS.accent });
   coverY += 34;
-  if (recipient) coverY += centered(`For ${recipient}`, 15, COLORS.ink, coverY, 21) + 12;
+  if (recipient) coverY += centered(`${recipient}에게`, 15, COLORS.ink, coverY, 21) + 12;
   const first = entries[0];
   const last = entries[entries.length - 1];
   if (first && last) {
     const from = formatDate(first.createdAt, first.tz);
     const to = formatDate(last.createdAt, last.tz);
     coverY += centered(from === to ? from : `${from} – ${to}`, 9.5, COLORS.soft, coverY, 14);
-    centered(entries.length === 1 ? '1 entry' : `${entries.length} entries`, 9.5, COLORS.soft, coverY, 14);
+    centered(`이야기 ${entries.length}개`, 9.5, COLORS.soft, coverY, 14);
   }
 
   // --- Entries ----------------------------------------------------------------------------

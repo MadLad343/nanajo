@@ -5,7 +5,7 @@
 export const settingsModule = {
   id: 'settings',
   title: 'Settings',
-  caption: 'Who your letter is for',
+  caption: '누구한테 쓰는 편지야?',
   tint: '#8795b8',
   // A page stack of its own, like the other destinations.
   layout: 'full',

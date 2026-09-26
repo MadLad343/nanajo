@@ -21,26 +21,22 @@ import { sharePdf } from '../logic/pdfExport.js';
  */
 export function createSendPreview({ letter, journal, notify, report, onSent }) {
   const { file, entries, prepared } = letter;
-  const count = entries.length === 1 ? '1 entry' : `${entries.length} entries`;
+  const count = `이야기 ${entries.length}개`;
   const pages = prepared.stats.pages;
 
-  const pagesStrip = h('div', { class: 'letter-preview__pages', attrs: { 'aria-label': 'Page preview' } });
+  const pagesStrip = h('div', { class: 'letter-preview__pages', attrs: { 'aria-label': '페이지 미리보기' } });
   const share = h(
     'button',
     { class: 'button send-preview__share', attrs: { type: 'button' } },
     svg(GLYPHS.share, { class: 'button__icon' }),
-    h('span', { text: 'Share PDF' }),
+    h('span', { text: '편지 보내기' }),
   );
   const el = h(
     'div',
     { class: 'send-preview' },
     pagesStrip,
-    h('p', { class: 'letter-preview__info', text: `${pages === 1 ? '1 page' : `${pages} pages`} · ${count} · ${formatSize(file.size)}` }),
+    h('p', { class: 'letter-preview__info', text: `${pages}쪽 · ${count} · ${formatSize(file.size)}` }),
     share,
-    h('p', {
-      class: 'group__footer',
-      text: `Opens the share sheet: Mail, Messages, AirDrop, Save to Files… Once you share it, ${entries.length === 1 ? 'the entry is' : `these ${count} are`} marked as sent. Cancel and nothing changes.`,
-    }),
   );
 
   // Page thumbnails, each drawn only when scrolled into view.
@@ -59,7 +55,7 @@ export function createSendPreview({ letter, journal, notify, report, onSent }) {
         )
       : null;
   const canvases = Array.from({ length: pages }, (_, index) => {
-    const canvas = h('canvas', { class: 'letter-preview__page', attrs: { 'aria-label': `Page ${index + 1}`, role: 'img' } });
+    const canvas = h('canvas', { class: 'letter-preview__page', attrs: { 'aria-label': `${index + 1}쪽`, role: 'img' } });
     canvas.dataset.page = String(index);
     return canvas;
   });
@@ -80,19 +76,19 @@ export function createSendPreview({ letter, journal, notify, report, onSent }) {
       try {
         await journal.markSent(entries.map((entry) => entry.id));
       } catch (error) {
-        report(error, 'The PDF went out, but the entries couldn’t be marked as sent.');
+        report(error, '편지는 보냈는데 보낸 표시를 못했어ㅠㅠ');
         return;
       }
-      notify(result === 'downloaded' ? `PDF saved to your downloads. ${count} marked as sent.` : `${count} marked as sent.`);
+      notify(result === 'downloaded' ? `편지를 저장했어! ${count} 보낸 걸로 표시했어.` : `${count} 보냈어!`);
       onSent();
     } catch (error) {
-      report(error, 'Couldn’t open the share sheet.');
+      report(error, '공유 창을 못 열었어ㅠㅠ');
     } finally {
       sharing = false;
     }
   });
 
-  return { el, title: 'Preview', destroy: () => observer?.disconnect() };
+  return { el, title: '미리보기', destroy: () => observer?.disconnect() };
 }
 
 /** @param {number} bytes */

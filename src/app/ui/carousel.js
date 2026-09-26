@@ -48,7 +48,7 @@ const MAX_RELEASE_VELOCITY = 6; // items/s
  * @param {CarouselOptions} options
  */
 export function createCarousel({ items, index: initialIndex, surface, onChange, onActivate }) {
-  const el = h('div', { class: 'carousel', attrs: { role: 'group', 'aria-roledescription': 'carousel' } }, ...items);
+  const el = h('div', { class: 'carousel', attrs: { role: 'group', 'aria-roledescription': '넘겨보는 메뉴' } }, ...items);
   const gestureSurface = surface ?? el;
   const count = items.length;
   const hidden = items.map(() => false);

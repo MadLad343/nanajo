@@ -1,6 +1,6 @@
 // Bump VERSION whenever any cached file changes; the new worker installs a
 // complete, separate cache and the page offers a reload to switch over.
-const VERSION = '6';
+const VERSION = '7';
 const CACHE_PREFIX = 'nanajo-shell-';
 const CACHE_NAME = `${CACHE_PREFIX}${VERSION}`;
 

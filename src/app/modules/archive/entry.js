@@ -49,19 +49,20 @@ export async function mount(root, { letters, notify, setHeader }) {
   /** @param {Entry} entry */
   async function remove(entry) {
     const confirmed = await confirmSheet(host, {
-      title: 'Delete this entry?',
-      message: `The entry from ${formatLongDate(entry.createdAt, entry.tz)} and its photos will be removed from your Archive. This can’t be undone.`,
-      confirm: 'Delete Entry',
+      title: '이 이야기 지우는 거 맞아?',
+      message: `${formatLongDate(entry.createdAt, entry.tz)}에 쓴 이야기와 사진이 Archive에서 사라져.`,
+      confirm: '지울래!',
+      cancel: '안지울래!',
     });
     if (!confirmed) return;
     try {
       await journal.remove(entry.id);
     } catch (error) {
-      report(error, 'Couldn’t delete the entry.');
+      report(error, '못 지웠어ㅠㅠ');
       return;
     }
     await stack.popToRoot();
-    notify('Entry deleted.');
+    notify('지웠어!');
   }
 
   function openSend() {

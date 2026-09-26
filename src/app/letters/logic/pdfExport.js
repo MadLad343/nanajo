@@ -14,7 +14,7 @@ import { FALLBACK_FONTS, createShaper } from './pdf/shaper.js';
 export { canBuildPdf };
 /** The document font's name for CSS and canvas once registered. */
 export const DOCUMENT_FONT = 'Letter Serif';
-export const FILE_NAME = 'Letter.pdf';
+export const FILE_NAME = '편지.pdf';
 
 /** @type {Promise<import('./pdf/font.js').TrueTypeFont> | null} */
 let registered = null;
@@ -76,7 +76,7 @@ export async function prepareExport(journal, entries) {
     async build(onProgress) {
       const blob = await renderPdf(doc, {
         font,
-        title: recipient ? `A letter for ${recipient}` : 'A letter',
+        title: recipient ? `${recipient}에게 쓰는 편지` : '편지',
         readPhoto: journal.photo,
         rasterize,
         onProgress,

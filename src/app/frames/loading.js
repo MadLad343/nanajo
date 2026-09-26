@@ -22,7 +22,7 @@ export function createLoadingFrame() {
   const spinner = h('div', { class: 'spinner loading__spinner' });
   const el = h(
     'section',
-    { class: 'frame loading', attrs: { role: 'status', 'aria-label': `Starting ${APP_NAME}` } },
+    { class: 'frame loading', attrs: { role: 'status', 'aria-label': `${APP_NAME} 기다려!` } },
     brand,
     spinner,
   );

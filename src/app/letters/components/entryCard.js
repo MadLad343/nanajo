@@ -47,13 +47,13 @@ export function renderEntryCard(entry, { journal, loader, onOpen }) {
     );
   }
 
-  const sent = entry.sentAt === null ? 'Not sent yet' : `Sent ${formatMonthDay(entry.sentAt, null)}`;
+  const sent = entry.sentAt === null ? '아직 안보낸거' : `${formatMonthDay(entry.sentAt, null)}에 보낸거`;
   const status = h(
     'p',
     { class: entry.sentAt === null ? 'entry-card__status is-unsent' : 'entry-card__status' },
     entry.sentAt === null ? h('span', { class: 'entry-card__dot' }) : svg(GLYPHS.check, { class: 'entry-card__check' }),
     // Entries edited before saved ones were sealed still say so.
-    h('span', { text: entry.modifiedAt ? `${sent} · Edited` : sent }),
+    h('span', { text: entry.modifiedAt ? `${sent} · 고침` : sent }),
   );
 
   const card = h(
@@ -63,7 +63,7 @@ export function renderEntryCard(entry, { journal, loader, onOpen }) {
       attrs: {
         role: 'button',
         tabindex: '0',
-        'aria-label': `Entry written ${formatLongDate(entry.createdAt, entry.tz)}, ${formatTime(entry.createdAt, entry.tz)}. ${sent}.`,
+        'aria-label': `${formatLongDate(entry.createdAt, entry.tz)} ${formatTime(entry.createdAt, entry.tz)}에 쓴 이야기, ${sent}`,
       },
     },
     when,

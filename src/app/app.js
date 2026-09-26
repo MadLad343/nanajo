@@ -46,7 +46,7 @@ export function createApp({ nav, registry, storage, letters, errors, notify, set
   async function start() {
     if (storage.mode === 'memory') {
       console.warn('[nanajo] Using in-memory storage.', storage.error);
-      notify({ message: 'Storage is unavailable, so changes won’t be kept.', duration: 5000 });
+      notify({ message: '지금은 저장이 안 돼ㅠㅠ 여기서 쓰는 건 안 남아!', duration: 5000 });
     }
 
     const selected = Math.max(0, Math.min(HOME_START_INDEX, modules.length - 1));
@@ -97,7 +97,7 @@ export function createApp({ nav, registry, storage, letters, errors, notify, set
     try {
       await nav.push(frame);
     } catch (error) {
-      errors.report(error, `Couldn’t open ${module.title}.`);
+      errors.report(error, `${module.title} 못 열었어ㅠㅠ`);
     }
   }
 
@@ -133,7 +133,7 @@ export function createApp({ nav, registry, storage, letters, errors, notify, set
 
     /** @param {() => void} apply */
     offerUpdate(apply) {
-      notify({ message: 'A new version is ready.', action: { label: 'Reload', run: apply }, duration: Infinity });
+      notify({ message: '새 버전 나왔어!', action: { label: '새로고침', run: apply }, duration: Infinity });
     },
   };
 }

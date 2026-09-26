@@ -42,7 +42,7 @@ export function createEntryEditor({ journal, draft, host, push, leave, notify, r
     'p',
     { class: 'entry-editor__stamp' },
     h('strong', { text: 'New entry' }),
-    h('span', { text: '오늘 얘기를 들려줘!!' }),
+    h('span', { text: '오늘 이야기를 들려줘!' }),
   );
 
   // --- Text -------------------------------------------------------------------------
@@ -50,7 +50,7 @@ export function createEntryEditor({ journal, draft, host, push, leave, notify, r
     class: 'entry-editor__text letter-prose',
     attrs: {
       placeholder: '오늘은 말이야…',
-      'aria-label': 'Entry text',
+      'aria-label': '오늘 이야기',
       maxlength: String(MAX_TEXT),
       autocapitalize: 'sentences',
       rows: '8',
@@ -78,7 +78,7 @@ export function createEntryEditor({ journal, draft, host, push, leave, notify, r
     'label',
     { class: 'entry-editor__add', attrs: { for: inputId, role: 'button', tabindex: '0' } },
     svg(GLYPHS.photo, { class: 'entry-editor__add-icon' }),
-    h('span', { text: 'Add Photos' }),
+    h('span', { text: '사진!!' }),
   );
   const strip = h('div', { class: 'entry-editor__photos' });
   const el = h(
@@ -86,13 +86,13 @@ export function createEntryEditor({ journal, draft, host, push, leave, notify, r
     { class: 'entry-editor' },
     stamp,
     textarea,
-    h('section', { class: 'entry-editor__attachments', attrs: { 'aria-label': 'Photos' } }, fileInput, strip),
+    h('section', { class: 'entry-editor__attachments', attrs: { 'aria-label': '사진' } }, fileInput, strip),
   );
   const loader = createLazyLoader(el);
 
   function renderStrip() {
     const tiles = photos.map((photo) => {
-      const remove = h('button', { class: 'entry-editor__remove', attrs: { type: 'button', 'aria-label': 'Remove photo' } }, svg(GLYPHS.close));
+      const remove = h('button', { class: 'entry-editor__remove', attrs: { type: 'button', 'aria-label': '사진 시러!!' } }, svg(GLYPHS.close));
       remove.addEventListener('click', () => removePhoto(photo));
       return h('div', { class: 'entry-editor__tile' }, renderPhoto({ photo, read: journal.thumbnail, loader, className: 'entry-editor__thumb' }), remove);
     });
@@ -143,8 +143,8 @@ export function createEntryEditor({ journal, draft, host, push, leave, notify, r
   });
 
   // --- Actions ------------------------------------------------------------------------
-  const discard = h('button', { class: 'letter-bar__secondary', text: 'Discard', attrs: { type: 'button' } });
-  const review = h('button', { class: 'button letter-bar__primary', text: 'Review', attrs: { type: 'button' } });
+  const discard = h('button', { class: 'letter-bar__secondary', text: '지우기', attrs: { type: 'button' } });
+  const review = h('button', { class: 'button letter-bar__primary', text: '다 썼어!', attrs: { type: 'button' } });
   el.append(h('div', { class: 'letter-bar' }, discard, review));
 
   const hasContent = () => Boolean(text.trim()) || photos.length > 0;
@@ -189,7 +189,7 @@ export function createEntryEditor({ journal, draft, host, push, leave, notify, r
       // Photos added here that no saved entry uses.
       journal.discardPhotos(photos);
     } catch (error) {
-      report(error, 'Couldn’t discard the draft.');
+      report(error, '못 지웠더ㅠㅠ');
     }
     await leave('discarded');
   });
@@ -207,11 +207,11 @@ export function createEntryEditor({ journal, draft, host, push, leave, notify, r
             await journal.create({ text, photos });
           } catch (error) {
             finished = false;
-            report(error, 'Couldn’t save the entry. It’s still here as a draft.');
+            report(error, '저장 못했더ㅠㅠ 쓴 건 그대로 있어!');
             return;
           }
           await leave('saved');
-          notify('Saved to your Archive.');
+          notify('Archive에 가바!!');
         },
       }),
     );
@@ -249,7 +249,7 @@ export function createEntryEditor({ journal, draft, host, push, leave, notify, r
  * @returns {import('../../ui/pageStack.js').Page}
  */
 function createReviewPage({ text, photos, journal, onSave }) {
-  const save = h('button', { class: 'button letter-bar__primary', text: 'Save Entry', attrs: { type: 'button' } });
+  const save = h('button', { class: 'button letter-bar__primary', text: '저장할래!', attrs: { type: 'button' } });
   let saving = false;
   save.addEventListener('click', async () => {
     if (saving) return;
@@ -267,7 +267,7 @@ function createReviewPage({ text, photos, journal, onSave }) {
       { class: 'entry-review__note' },
       svg(GLYPHS.lock, { class: 'entry-review__note-icon' }),
       h('p', {
-        text: 'Check it over. Saving puts it in your Archive exactly as written. From there it can be sent or deleted, but not changed.',
+        text: '한번 쓰면 못고쳐!! 누나눈 몽총하니까 꼭 다시 확인해바!!',
       }),
     ),
   );
@@ -276,5 +276,5 @@ function createReviewPage({ text, photos, journal, onSave }) {
     renderEntryBody({ dated: null, text: text.replace(/\s+$/, ''), photos, read: journal.photo, loader }),
     h('div', { class: 'letter-bar' }, save),
   );
-  return { el, title: 'Review', destroy: loader.disconnect };
+  return { el, title: '한번 더 보던가!', destroy: loader.disconnect };
 }

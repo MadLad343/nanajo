@@ -28,7 +28,7 @@ export function createErrorBoundary({ root, debug, notify }) {
       root.append(createErrorFrame({ error, debug }).el);
     } catch (frameError) {
       console.error('[nanajo] Error screen failed', frameError);
-      root.textContent = 'Something went wrong. Reload to try again.';
+      root.textContent = '뭔가 꼬였어ㅠㅠ 새로고침 해바!';
     }
   }
 
@@ -36,7 +36,7 @@ export function createErrorBoundary({ root, debug, notify }) {
    * @param {unknown} error
    * @param {string} [context]  Short, user-readable description of what failed.
    */
-  function report(error, context = 'Something went wrong.') {
+  function report(error, context = '뭔가 꼬였어ㅠㅠ') {
     console.error(`[nanajo] ${context}`, error);
     notify(debug ? `${context} ${firstLine(describeError(error))}` : context);
   }

@@ -26,10 +26,10 @@ import { createTicker } from '../ui/ticker.js';
  * @returns {import('../navigation.js').Frame}
  */
 export function createModuleFrame({ module, context, getOrigin, onBack, onError, debug }) {
-  const backLabel = h('span', { class: 'module__back-label', text: 'Home' });
+  const backLabel = h('span', { class: 'module__back-label', text: '홈' });
   const back = h(
     'button',
-    { class: 'module__back', attrs: { type: 'button', 'aria-label': 'Back to Home' } },
+    { class: 'module__back', attrs: { type: 'button', 'aria-label': '홈으로 돌아가기' } },
     svg(ICONS.chevronLeft, { class: 'module__back-icon' }),
     backLabel,
   );
@@ -58,10 +58,10 @@ export function createModuleFrame({ module, context, getOrigin, onBack, onError,
   function setHeader(header, direction = 0) {
     if (destroyed) return;
     backOverride = header.back ?? null;
-    const label = header.back?.label ?? 'Home';
+    const label = header.back?.label ?? '홈';
     if (backLabel.textContent !== label) {
       backLabel.textContent = label;
-      back.setAttribute('aria-label', `Back to ${label}`);
+      back.setAttribute('aria-label', `${label} 화면으로 돌아가기`);
       if (direction !== 0) {
         const shift = prefersReducedMotion() ? 0 : 10 * direction;
         animate(backLabel, [{ opacity: 0, transform: `translateX(${shift}px)` }, { opacity: 1, transform: 'none' }], {
@@ -79,7 +79,7 @@ export function createModuleFrame({ module, context, getOrigin, onBack, onError,
   entry.catch(() => {});
 
   async function mountModule() {
-    const spinner = h('div', { class: 'spinner module__spinner', attrs: { role: 'status', 'aria-label': 'Loading' } });
+    const spinner = h('div', { class: 'spinner module__spinner', attrs: { role: 'status', 'aria-label': '기다려!' } });
     const spinnerTimer = window.setTimeout(() => body.append(spinner), 250);
     try {
       const { mount } = await entry;
@@ -95,14 +95,14 @@ export function createModuleFrame({ module, context, getOrigin, onBack, onError,
       onError(error);
       body.replaceChildren(
         renderNotice({
-          title: `${module.title} couldn’t open`,
+          title: `${module.title} 이상해!`,
           text:
             navigator.onLine === false
-              ? 'You’re offline, and this screen hasn’t been saved for offline use yet.'
-              : 'Something went wrong while opening it.',
+              ? '이상해! 인터넷 연결 안해놨지! 😡'
+              : '이상해!!',
           // Browsers cache a failed module import for the page's lifetime, so an
           // in-place retry can't succeed; a reload can.
-          action: { label: 'Reload', run: () => location.reload() },
+          action: { label: '고쳐!', run: () => location.reload() },
           details: debug ? error : undefined,
         }),
       );
