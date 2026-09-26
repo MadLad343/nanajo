@@ -39,7 +39,7 @@ export function createSendPreview({ letter, journal, notify, report, onSent }) {
     share,
     h('p', {
       class: 'group__footer',
-      text: `Opens the share sheet: Mail, Messages, AirDrop, Save to Files… Once you share it, ${entries.length === 1 ? 'the entry is' : `these ${count} are`} marked as sent. Cancel and nothing changes.`,
+      text: `나한테 보낼 수 있는 PDF를 만들었어! 보내고 나면 이 ${entries.length === 1 ? '이야기는' : `${count} 개 이야기들은`} "sent" 라고 표시될거야!`,
     }),
   );
 

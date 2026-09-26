@@ -42,14 +42,14 @@ export function createEntryEditor({ journal, draft, host, push, leave, notify, r
     'p',
     { class: 'entry-editor__stamp' },
     h('strong', { text: 'New entry' }),
-    h('span', { text: 'It will be dated with the moment you save it.' }),
+    h('span', { text: '👇🏻 여기에다 적으면 돼! 👇🏻' }),
   );
 
   // --- Text -------------------------------------------------------------------------
   const textarea = h('textarea', {
     class: 'entry-editor__text letter-prose',
     attrs: {
-      placeholder: 'Write something for later…',
+      placeholder: '오늘은 말야…',
       'aria-label': 'Entry text',
       maxlength: String(MAX_TEXT),
       autocapitalize: 'sentences',
@@ -267,7 +267,7 @@ function createReviewPage({ text, photos, journal, onSave }) {
       { class: 'entry-review__note' },
       svg(GLYPHS.lock, { class: 'entry-review__note-icon' }),
       h('p', {
-        text: 'Check it over. Saving puts it in your Archive exactly as written. From there it can be sent or deleted, but not changed.',
+        text: '누나는 몽총하니까 꼭 다시 읽어보고 저장해야대! 한번 쓴 편지는 못바꾸니까 꼼꼼히 읽어봐!',
       }),
     ),
   );

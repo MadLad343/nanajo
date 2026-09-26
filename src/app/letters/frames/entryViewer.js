@@ -42,8 +42,8 @@ export function renderEntryBody({ dated, text, photos, read, loader, status }) {
     : h(
         'div',
         { class: 'entry-view__stamp' },
-        h('span', { class: 'entry-view__label', text: 'Will be dated' }),
-        h('span', { class: 'entry-view__date', text: 'When you save' }),
+        h('span', { class: 'entry-view__label', text: '날짜랑 시간도 확인해!' }),
+        h('span', { class: 'entry-view__date', text: 'Will be dated' }),
         h('span', { class: 'entry-view__time', text: `${formatLongDate(Date.now(), null)} · ${formatTime(Date.now(), null)}` }),
       );
 

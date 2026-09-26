@@ -107,7 +107,7 @@ export function createSendPage({ journal, onReady, report }) {
   const photoCount = h('span', { class: 'row__value' });
   const span = h('span', { class: 'row__value' });
   const summary = renderGroup(
-    { title: 'In this letter', footer: 'The name is shown on the cover. Change it in Settings.' },
+    { title: 'In this letter', footer: '이름은 설정에서 바꿀 수 있어!' },
     summaryRow('For', h('span', { class: 'row__value', text: journal.recipient() || 'Not named' })),
     summaryRow('Entries', count),
     summaryRow('Photos', photoCount),
@@ -134,7 +134,7 @@ export function createSendPage({ journal, onReady, report }) {
     { class: 'send-page' },
     h('p', {
       class: 'send-page__intro',
-      text: 'Everything not sent yet goes into one PDF, oldest first, each entry under its date. Leave one out, or add one you’ve sent before.',
+      text: '누나가 쓰는 모든 이야기는 여기에 저장돼! 이곳에서 모아둔 이야기들을 편지로 보낼 수 있어!',
     }),
     unsentGroup,
     sentGroup,

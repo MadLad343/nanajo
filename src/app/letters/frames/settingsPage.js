@@ -43,14 +43,14 @@ export function createSettingsPage({ journal, report }) {
     'div',
     { class: 'settings-page' },
     renderGroup(
-      { title: 'Letter', footer: 'Who your letter is for. Shown in Archive and on the cover of the PDF. Leave empty for none.' },
+      { title: 'Letter', footer: '여기다 내 이름 쓰면 편지 만들때 자동으로 입력되는거야!' },
       h('label', { class: 'row field' }, h('span', { class: 'field__label', text: 'For' }), input),
     ),
     h('p', {
       class: 'group__footer',
       text:
-        'Your entries are kept only on this iPhone, and removing the app from the Home Screen erases them. ' +
-        'To keep a copy, send yourself a PDF from Archive.',
+        '누나가 쓰는 편지는 앱을 지우면 사라져! ' +
+        '편지를 간직하려면 PDF로 저장해두면 돼!',
     }),
   );
 
