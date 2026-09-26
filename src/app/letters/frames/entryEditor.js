@@ -42,14 +42,14 @@ export function createEntryEditor({ journal, draft, host, push, leave, notify, r
     'p',
     { class: 'entry-editor__stamp' },
     h('strong', { text: 'New entry' }),
-    h('span', { text: 'It will be dated with the moment you save it.' }),
+    h('span', { text: '오늘 얘기를 들려줘!!' }),
   );
 
   // --- Text -------------------------------------------------------------------------
   const textarea = h('textarea', {
     class: 'entry-editor__text letter-prose',
     attrs: {
-      placeholder: 'Write something for later…',
+      placeholder: '오늘은 말이야…',
       'aria-label': 'Entry text',
       maxlength: String(MAX_TEXT),
       autocapitalize: 'sentences',
@@ -134,7 +134,7 @@ export function createEntryEditor({ journal, draft, host, push, leave, notify, r
     if (finished) return;
     syncActions();
     await saveDraft();
-    if (failed) notify(failed === 1 ? 'One photo couldn’t be added.' : `${failed} photos couldn’t be added.`);
+    if (failed) notify(failed === 1 ? '사진 한장이 이상해ㅠㅠ' : `사진 ${failed}장이 이상해ㅠㅠ`);
   });
   addTile.addEventListener('keydown', (event) => {
     if (event.key !== 'Enter' && event.key !== ' ') return;
@@ -168,17 +168,17 @@ export function createEntryEditor({ journal, draft, host, push, leave, notify, r
       if (hasContent()) await journal.saveDraft({ text, photos });
       else if (journal.draft()) await journal.clearDraft();
     } catch (error) {
-      report(error, 'Couldn’t keep your unsaved writing. Please save soon.');
+      report(error, '저장 못했더ㅠㅠ 빨리 저장해바!!');
     }
   }
 
   discard.addEventListener('click', async () => {
     if (hasContent()) {
       const confirmed = await confirmSheet(host, {
-        title: 'Discard this entry?',
-        message: 'What you wrote here won’t be kept.',
-        confirm: 'Discard Entry',
-        cancel: 'Keep Writing',
+        title: '이거 지우는거 마쟈?',
+        message: '지우면 끝이다?',
+        confirm: '지울래!',
+        cancel: '안지울래!',
       });
       if (!confirmed) return;
     }
