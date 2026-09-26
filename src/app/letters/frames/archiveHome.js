@@ -44,12 +44,12 @@ export function createArchiveHome({ journal, openEntry, openSend }) {
     'button',
     { class: 'button archive-send__button', attrs: { type: 'button' } },
     svg(GLYPHS.send, { class: 'button__icon' }),
-    h('span', { text: '보내기' }),
+    h('span', { text: 'Send' }),
   );
   sendButton.addEventListener('click', openSend);
   const sendPanel = h(
     'section',
-    { class: 'archive-send', attrs: { 'aria-label': '보내기' } },
+    { class: 'archive-send', attrs: { 'aria-label': 'Send' } },
     h('div', { class: 'archive-send__text' }, sendTitle, sendDetail),
     sendButton,
   );
@@ -59,7 +59,13 @@ export function createArchiveHome({ journal, openEntry, openSend }) {
     'div',
     { class: 'archive-empty' },
     svg(ENVELOPE_ILLUSTRATION, { class: 'archive-empty__art', viewBox: '0 0 100 110' }),
-    h('h3', { class: 'archive-empty__title', text: '천천히 쓰는 편지' }),
+    h('h3', { class: 'archive-empty__title', text: 'A letter, written over time' }),
+    h('p', {
+      class: 'archive-empty__text',
+      text:
+        'Entries you save from New Entry are kept here, newest first, each with the moment it was written. ' +
+        'When you’re ready, send them together as one letter.',
+    }),
   );
 
   // --- Timeline ------------------------------------------------------------------------
@@ -121,10 +127,10 @@ export function createArchiveHome({ journal, openEntry, openSend }) {
   function showSummary() {
     const { entries, first } = journal.stats();
     const recipient = journal.recipient();
-    eyebrow.textContent = recipient ? `${recipient}에게` : '숨겨두는 중!!';
+    eyebrow.textContent = recipient ? `For ${recipient}` : 'Kept on this iPhone';
     meta.textContent = first
-      ? `할 이야기 ${entries}개 · ${formatDate(first.createdAt, first.tz)}부터`
-      : '무!!!!!';
+      ? `${entries === 1 ? '1 entry' : `${entries} entries`} · since ${formatDate(first.createdAt, first.tz)}`
+      : 'Nothing saved yet';
     sendPanel.hidden = entries === 0;
     empty.hidden = entries > 0;
     timeline.hidden = entries === 0;
@@ -135,11 +141,11 @@ export function createArchiveHome({ journal, openEntry, openSend }) {
       const newest = unsent[0];
       const from = formatMonthDay(oldest.createdAt, oldest.tz);
       const to = formatMonthDay(newest.createdAt, newest.tz);
-      sendTitle.textContent = `아직 안 보낸 이야기 ${unsent.length}개`;
+      sendTitle.textContent = unsent.length === 1 ? '1 entry not sent yet' : `${unsent.length} entries not sent yet`;
       sendDetail.textContent = from === to ? from : `${from} – ${to}`;
     } else {
-      sendTitle.textContent = '마싯게 머겅!!';
-      sendDetail.textContent = '보낸거 또 보내두 돼!!';
+      sendTitle.textContent = 'Everything has been sent';
+      sendDetail.textContent = 'You can still send any entry again.';
     }
   }
 

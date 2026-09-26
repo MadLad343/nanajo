@@ -50,10 +50,10 @@ export function createSendPage({ journal, onReady, report }) {
     boxes.push(input);
 
     const words = entry.text.trim().replace(/\s+/g, ' ');
-    const photos = `사진 ${entry.photos.length}장`;
+    const photos = entry.photos.length === 1 ? '1 photo' : `${entry.photos.length} photos`;
     const detail =
       entry.sentAt !== null
-        ? h('span', { class: 'send-row__detail', text: `${formatMonthDay(entry.sentAt, null)}에 보냈어` })
+        ? h('span', { class: 'send-row__detail', text: `Sent ${formatMonthDay(entry.sentAt, null)}` })
         : h('span', { class: words ? 'send-row__preview letter-prose' : 'send-row__detail', text: words || photos });
 
     return h(
@@ -79,7 +79,7 @@ export function createSendPage({ journal, onReady, report }) {
   const unsentGroup = h(
     'section',
     { class: 'group' },
-    h('div', { class: 'send-group__head' }, h('h2', { class: 'group__title', text: '아직 안 보낸 이야기' }), toggleAll),
+    h('div', { class: 'send-group__head' }, h('h2', { class: 'group__title', text: 'Not sent yet' }), toggleAll),
     h('div', { class: 'group__body' }, ...unsent.map(renderRow)),
   );
   unsentGroup.hidden = unsent.length === 0;
@@ -89,7 +89,7 @@ export function createSendPage({ journal, onReady, report }) {
   const sentGroup = h(
     'details',
     { class: 'send-sent' },
-    h('summary', { class: 'group__title send-sent__summary', text: `전에 보낸 이야기 · ${sentBefore.length}` }),
+    h('summary', { class: 'group__title send-sent__summary', text: `Sent before · ${sentBefore.length}` }),
     sentBody,
   );
   sentGroup.hidden = sentBefore.length === 0;
@@ -107,17 +107,17 @@ export function createSendPage({ journal, onReady, report }) {
   const photoCount = h('span', { class: 'row__value' });
   const span = h('span', { class: 'row__value' });
   const summary = renderGroup(
-    { title: '이번 편지에는' },
-    summaryRow('받는 사람', h('span', { class: 'row__value', text: journal.recipient() || '아직 없음' })),
-    summaryRow('이야기', count),
-    summaryRow('사진', photoCount),
-    summaryRow('기간', span),
+    { title: 'In this letter', footer: 'The name is shown on the cover. Change it in Settings.' },
+    summaryRow('For', h('span', { class: 'row__value', text: journal.recipient() || 'Not named' })),
+    summaryRow('Entries', count),
+    summaryRow('Photos', photoCount),
+    summaryRow('Written', span),
   );
 
   // --- Create -------------------------------------------------------------------------------
   const create = h('button', { class: 'button letter-bar__primary', attrs: { type: 'button' } });
   const progressBar = h('span', { class: 'letter-progress__bar' });
-  const progressLabel = h('span', { class: 'letter-progress__label', text: '만드는 중…' });
+  const progressLabel = h('span', { class: 'letter-progress__label', text: 'Composing…' });
   const progress = h(
     'div',
     { class: 'letter-progress', attrs: { role: 'status' } },
@@ -127,11 +127,15 @@ export function createSendPage({ journal, onReady, report }) {
   progress.hidden = true;
   const unsupported = supported
     ? null
-    : h('p', { class: 'group__footer is-error', text: '누나 핸드폰이 너무 몽총해서 못만드러!!' });
+    : h('p', { class: 'group__footer is-error', text: 'Creating PDFs needs iOS 16.4 or later on this iPhone.' });
 
   const el = h(
     'div',
     { class: 'send-page' },
+    h('p', {
+      class: 'send-page__intro',
+      text: 'Everything not sent yet goes into one PDF, oldest first, each entry under its date. Leave one out, or add one you’ve sent before.',
+    }),
     unsentGroup,
     sentGroup,
     summary,
@@ -154,8 +158,8 @@ export function createSendPage({ journal, onReady, report }) {
   function update() {
     const entries = picked();
     const photos = entries.reduce((sum, entry) => sum + entry.photos.length, 0);
-    count.textContent = `${entries.length}개`;
-    photoCount.textContent = `${photos}장`;
+    count.textContent = String(entries.length);
+    photoCount.textContent = String(photos);
     const oldest = entries.at(-1);
     const newest = entries[0];
     if (!oldest || !newest) span.textContent = '—';
@@ -164,10 +168,10 @@ export function createSendPage({ journal, onReady, report }) {
       const to = formatDate(newest.createdAt, newest.tz);
       span.textContent = from === to ? from : `${from} – ${to}`;
     }
-    toggleAll.textContent = unsent.every((entry) => chosen.has(entry.id)) ? '다 없애버려!!' : '다 추가할래!!';
+    toggleAll.textContent = unsent.every((entry) => chosen.has(entry.id)) ? 'Select None' : 'Select All';
     create.textContent = entries.length
-      ? `편지 만들기 · 이야기 ${entries.length}개`
-      : '몽총해!!';
+      ? `Create PDF · ${entries.length === 1 ? '1 entry' : `${entries.length} entries`}`
+      : 'Choose at least one entry';
     create.disabled = building || !supported || entries.length === 0;
     toggleAll.disabled = building;
   }
@@ -185,15 +189,15 @@ export function createSendPage({ journal, onReady, report }) {
     syncBoxes();
     update();
     progress.hidden = false;
-    setProgress(0, '페이지 만드는 중…');
+    setProgress(0, 'Composing pages…');
     try {
       const prepared = await prepareExport(journal, entries);
-      const label = `${prepared.stats.pages}쪽 쓰는 중…`;
+      const label = `Writing ${prepared.stats.pages} pages…`;
       setProgress(0.05, label);
       const file = await prepared.build((fraction) => setProgress(0.05 + fraction * 0.95, label));
       onReady({ file, entries, prepared });
     } catch (error) {
-      report(error, '이상해!!');
+      report(error, 'Couldn’t create the PDF.');
     } finally {
       progress.hidden = true;
       building = false;
@@ -203,7 +207,7 @@ export function createSendPage({ journal, onReady, report }) {
   });
 
   update();
-  return { el, title: '보내기' };
+  return { el, title: 'Send' };
 }
 
 /** @param {string} label @param {HTMLElement} value */

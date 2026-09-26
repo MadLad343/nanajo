@@ -5,7 +5,7 @@
 export const archiveModule = {
   id: 'archive',
   title: 'Archive',
-  caption: '모아둔 이야기 보고, 보내기!',
+  caption: 'Read and send saved entries',
   tint: '#8a7dff',
   // A page stack of its own (list, entry, send, preview).
   layout: 'full',

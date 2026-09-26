@@ -28,7 +28,7 @@ export function renderNotice({ title, text, action, details }) {
       h(
         'details',
         { class: 'notice__details' },
-        h('summary', { text: '자세히' }),
+        h('summary', { text: 'Details' }),
         h('pre', { text: describeError(details) }),
       ),
   );

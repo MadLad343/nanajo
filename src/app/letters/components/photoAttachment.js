@@ -60,7 +60,7 @@ export function createLazyLoader(root, rootMargin = '900px 0px') {
  * @param {string} [options.className]
  * @param {string} [options.alt]
  */
-export function renderPhoto({ photo, read, loader, className = '', alt = '사진' }) {
+export function renderPhoto({ photo, read, loader, className = '', alt = 'Photo' }) {
   const img = h('img', {
     class: 'letter-photo__img',
     attrs: { alt, decoding: 'async', draggable: 'false', width: String(photo.width), height: String(photo.height) },

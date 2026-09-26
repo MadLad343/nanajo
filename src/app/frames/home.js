@@ -40,11 +40,11 @@ export function createHomeFrame({ modules, selected, onSelect, onOpen }) {
 
   const label = h('div', { class: 'home__label' }, title.el, caption.el);
   if (modules.length > 0) stage.append(carousel.el, label);
-  else stage.append(h('p', { class: 'home__empty', text: '아직 아무것도 없어!' }));
+  else stage.append(h('p', { class: 'home__empty', text: 'No modules installed yet.' }));
 
   const header = h('header', { class: 'home__header' }, h('span', { class: 'wordmark', text: APP_NAME }));
   const footer = h('footer', { class: 'home__footer' }, dots.el);
-  const el = h('section', { class: 'frame home', attrs: { 'aria-label': '홈' } }, header, stage, footer);
+  const el = h('section', { class: 'frame home', attrs: { 'aria-label': 'Home' } }, header, stage, footer);
 
   showLabel(carousel.index, 0);
 
@@ -123,7 +123,7 @@ function renderCard(module) {
     'button',
     {
       class: 'card',
-      attrs: { type: 'button', 'aria-label': `${module.title} 여러!!` },
+      attrs: { type: 'button', 'aria-label': `Open ${module.title}` },
       style: { '--tint': module.tint ?? BRAND_TINT },
     },
     h('span', { class: 'card__sheen' }),

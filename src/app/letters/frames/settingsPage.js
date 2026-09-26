@@ -17,12 +17,12 @@ export function createSettingsPage({ journal, report }) {
     class: 'field__input',
     attrs: {
       type: 'text',
-      placeholder: '비워둬도 돼!',
+      placeholder: 'Optional',
       autocomplete: 'off',
       autocapitalize: 'words',
       enterkeyhint: 'done',
       maxlength: '80',
-      'aria-label': '받는 사람',
+      'aria-label': 'For',
     },
   });
   input.value = journal.recipient();
@@ -31,7 +31,7 @@ export function createSettingsPage({ journal, report }) {
     try {
       await journal.setRecipient(input.value);
     } catch (error) {
-      report(error, '이름 저장 못했어ㅠㅠ');
+      report(error, 'Couldn’t save the name.');
     }
   }
   input.addEventListener('change', save);
@@ -43,9 +43,15 @@ export function createSettingsPage({ journal, report }) {
     'div',
     { class: 'settings-page' },
     renderGroup(
-      { title: '편지' },
-      h('label', { class: 'row field' }, h('span', { class: 'field__label', text: '받는 사람' }), input),
+      { title: 'Letter', footer: 'Who your letter is for. Shown in Archive and on the cover of the PDF. Leave empty for none.' },
+      h('label', { class: 'row field' }, h('span', { class: 'field__label', text: 'For' }), input),
     ),
+    h('p', {
+      class: 'group__footer',
+      text:
+        'Your entries are kept only on this iPhone, and removing the app from the Home Screen erases them. ' +
+        'To keep a copy, send yourself a PDF from Archive.',
+    }),
   );
 
   /** @type {import('../../ui/pageStack.js').Page & { save: () => Promise<void> }} */

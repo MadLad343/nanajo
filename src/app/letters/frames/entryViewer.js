@@ -24,7 +24,7 @@ export function renderEntryBody({ dated, text, photos, read, loader, status }) {
     ? h(
         'div',
         { class: 'entry-view__stamp' },
-        h('span', { class: 'entry-view__label', text: '쓴 날' }),
+        h('span', { class: 'entry-view__label', text: 'Written' }),
         h('time', {
           class: 'entry-view__date',
           text: formatLongDate(dated.createdAt, dated.tz),
@@ -34,7 +34,7 @@ export function renderEntryBody({ dated, text, photos, read, loader, status }) {
         dated.modifiedAt
           ? h('span', {
               class: 'entry-view__edited',
-              text: `${formatLongDate(dated.modifiedAt, dated.tz)}에 고쳤어. 위 날짜는 처음 쓴 날 그대로야!`,
+              text: `Edited ${formatLongDate(dated.modifiedAt, dated.tz)}. The date above stays as it was written.`,
             })
           : null,
         status,
@@ -42,8 +42,8 @@ export function renderEntryBody({ dated, text, photos, read, loader, status }) {
     : h(
         'div',
         { class: 'entry-view__stamp' },
-        h('span', { class: 'entry-view__label', text: '날짜는' }),
-        h('span', { class: 'entry-view__date', text: '저장하는 순간!' }),
+        h('span', { class: 'entry-view__label', text: 'Will be dated' }),
+        h('span', { class: 'entry-view__date', text: 'When you save' }),
         h('span', { class: 'entry-view__time', text: `${formatLongDate(Date.now(), null)} · ${formatTime(Date.now(), null)}` }),
       );
 
@@ -76,7 +76,7 @@ export function createEntryViewer({ entry, journal, onDelete }) {
     'button',
     { class: 'chip chip--danger', attrs: { type: 'button' } },
     svg(GLYPHS.trash, { class: 'chip__icon' }),
-    h('span', { text: '지우기' }),
+    h('span', { text: 'Delete Entry' }),
   );
   remove.addEventListener('click', () => onDelete(entry));
 
@@ -84,9 +84,9 @@ export function createEntryViewer({ entry, journal, onDelete }) {
     'div',
     { class: 'entry-view__tags' },
     entry.sentAt === null
-      ? h('span', { class: 'tag tag--unsent' }, h('span', { class: 'tag__dot' }), h('span', { text: '아직 안 보냈어' }))
-      : h('span', { class: 'tag' }, svg(GLYPHS.check, { class: 'tag__icon' }), h('span', { text: `${formatMonthDay(entry.sentAt, null)}에 보냈어` })),
-    h('span', { class: 'tag' }, svg(GLYPHS.lock, { class: 'tag__icon' }), h('span', { text: '쓴 그대로 보관 중' })),
+      ? h('span', { class: 'tag tag--unsent' }, h('span', { class: 'tag__dot' }), h('span', { text: 'Not sent yet' }))
+      : h('span', { class: 'tag' }, svg(GLYPHS.check, { class: 'tag__icon' }), h('span', { text: `Sent ${formatMonthDay(entry.sentAt, null)}` })),
+    h('span', { class: 'tag' }, svg(GLYPHS.lock, { class: 'tag__icon' }), h('span', { text: 'Kept as written' })),
   );
 
   const el = h('div', { class: 'entry-viewer' });
@@ -95,5 +95,5 @@ export function createEntryViewer({ entry, journal, onDelete }) {
     renderEntryBody({ dated: entry, text: entry.text, photos: entry.photos, read: journal.photo, loader, status }),
     h('div', { class: 'entry-viewer__actions' }, remove),
   );
-  return { el, title: '', backLabel: '이야기', destroy: loader.disconnect };
+  return { el, title: '', backLabel: 'Entry', destroy: loader.disconnect };
 }

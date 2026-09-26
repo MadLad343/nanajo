@@ -6,7 +6,7 @@
 export const newEntryModule = {
   id: 'new-entry',
   title: 'New Entry',
-  caption: '오늘 이야기 쓰러 가자!',
+  caption: 'Start writing a letter entry',
   tint: '#1f9fb5',
   // A page stack of its own (editor, review).
   layout: 'full',

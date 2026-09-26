@@ -18,7 +18,7 @@ import { EASE_OUT, animate, prefersReducedMotion } from '../../ui/motion.js';
  * @param {ConfirmOptions} options
  * @returns {Promise<boolean>}
  */
-export function confirmSheet(host, { title, message, confirm, cancel = '취소', destructive = true }) {
+export function confirmSheet(host, { title, message, confirm, cancel = 'Cancel', destructive = true }) {
   return new Promise((resolve) => {
     const titleId = uniqueId('sheet-title');
     const messageId = uniqueId('sheet-message');
